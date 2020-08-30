@@ -19,5 +19,18 @@ if [ "$(echo "$git_branch"|grep "remotes/upstream/$trace_branch")" = "" ];then
   echo "cannot find local branch remotes/upstream/$trace_branch"
   exit
 fi
-echo "OK"
+
+# trace_branchにswitch
+if [ "$current_branch" != "$trace_branch" ];then
+  git checkout "$trace_branch"
+fi
+# upstreamを取得
+git fetch upstream
+#merge
+git merge "upstream/${trace_branch}"
+
+# 元のbranchにswitch
+if [ "$current_branch" != "$trace_branch" ];then
+  git checkout "$current_branch"
+fi
 
