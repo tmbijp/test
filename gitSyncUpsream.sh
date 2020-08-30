@@ -1,11 +1,32 @@
 #!/bin/bash
-# 追いかけるbranch
+#
+#  git local workspaceに上位リポジトリの変更を同期する
+#
+# 1.scriptの設置
+#   このscriptを$HOME/bin(なければ作成)に放り込んで置き
+#   $HOME/binにPATHが通っていなければ通しておく
+# 
+# 2.localのgit work spaceの準備
+#   git clone <my_git_url>
+#   cd <git_dir>
+#   git status (git work spaceであることの確認)
+#   git remote add upstream <upstream_git_url>
+#   git remote -v (確認)
+#   git fetch upstream
+#   git branch -a (remotes/originとremotes/upstreamの両方に対象branchが存在することを確認)
+#   ここまでやっていればこのscriptをgit work spaceで実行することでupsteamを同期する
+#
+# 3.注意点
+#   追いかけるbranchはupstreamから同期するのみにしておきローカルからは更新しないこと
+#   実行時には現在のブランチへの(git管理下のファイル)はcommitしておくこと
+#   追いかけるbranch名はtrace_branchにセットする
+
 trace_branch="v1.0.0"
 
 # localがgit work spaceか確認
-git_status="$(git status -s 2>&1 1> /dev/null )"
-if [ "$git_status" ];then
-  echo "$git_status"
+git_status_err="$(git status -s 2>&1 1> /dev/null )"
+if [ "$git_status_err" ];then
+  echo "$git_status_err"
   echo "git status取得に失敗したため処理を中止します"
   exit
 fi
@@ -15,11 +36,11 @@ git_branch="$(git branch -a)"
 current_branch=$(echo "$git_branch"|grep '^* '|awk '{ print $2 }')
 
 if [ "$(echo "$git_branch"|grep "remotes/origin/$trace_branch")" = "" ];then
-  echo "cannot find local branch remotes/origin/$trace_branch"
+  echo "cannot find remote branch: remotes/origin/${trace_branch}"
   exit
 fi
 if [ "$(echo "$git_branch"|grep "remotes/upstream/$trace_branch")" = "" ];then
-  echo "cannot find local branch remotes/upstream/$trace_branch"
+  echo "cannot find upstream branch: remotes/upstream/$trace_branch"
   exit
 fi
 
