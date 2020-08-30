@@ -35,12 +35,12 @@ fi
 git_branch="$(git branch -a)"
 current_branch=$(echo "$git_branch"|grep '^* '|awk '{ print $2 }')
 
-if [ "$(echo "$git_branch"|grep "remotes/origin/$trace_branch")" = "" ];then
+if [ "$(echo "$git_branch"|grep "remotes/origin/${trace_branch}")" = "" ];then
   echo "cannot find remote branch: remotes/origin/${trace_branch}"
   exit
 fi
-if [ "$(echo "$git_branch"|grep "remotes/upstream/$trace_branch")" = "" ];then
-  echo "cannot find upstream branch: remotes/upstream/$trace_branch"
+if [ "$(echo "$git_branch"|grep "remotes/upstream/${trace_branch}")" = "" ];then
+  echo "cannot find upstream branch: remotes/upstream/${trace_branch}"
   exit
 fi
 
