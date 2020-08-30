@@ -1,5 +1,8 @@
 #!/bin/bash
+# 追いかけるbranch
 trace_branch="v1.0.0"
+
+# localがgit work spaceか確認
 git_status="$(git status -s 2>&1 1> /dev/null )"
 if [ "$git_status" ];then
   echo "$git_status"
@@ -7,9 +10,9 @@ if [ "$git_status" ];then
   exit
 fi
 
+# git branchをキャッシュ
 git_branch="$(git branch -a)"
 current_branch=$(echo "$git_branch"|grep '^* '|awk '{ print $2 }')
-echo "current_branch #=>$current_branch"
 
 if [ "$(echo "$git_branch"|grep "remotes/origin/$trace_branch")" = "" ];then
   echo "cannot find local branch remotes/origin/$trace_branch"
