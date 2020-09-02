@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#  git local workspaceに上位リポジトリの変更を同期する
+# git local workspaceに上流リポジトリの変更を同期する(forkしたリポジトリのfork元の変更を取り込む)
 #
 # 1.scriptの設置
 #   このscriptを$HOME/bin(なければ作成)に放り込んで置き
@@ -22,6 +22,15 @@
 #   追いかけるbranchはupstreamから同期するのみにしておきローカルからは更新しないこと
 #   実行時には現在のブランチへの(git管理下のファイル)はcommitしておくこと
 #   追いかけるbranch名はtrace_branchにセットする
+#
+# 4. 自分のリポジトリにpushする場合に上流(upstream)と自分のリポジトリが一致しているかの確認
+#    push後にgithubの自分のリポジトリのtrace_branchを選択して
+#    ブランチ選択直後の画面に
+#    "This branch is even with <upstream_repo>.<trace_branch>."
+#    と表示されていたら自分のリポジトリのtrace_branchと上流(upstream)のtrace_branchが完全に一致していると確認できる。
+#    この文言がない場合は自分のリポジトリのtrace_branchとupstreamのtrace_branchで内容が異なっていることになる。
+#    このtrace_branchで何かの変更をcommit,pushしてしまっている可能性があるので確認が必要となる。
+
 
 trace_branch="v1.0.0"
 
