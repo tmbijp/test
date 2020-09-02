@@ -10,6 +10,8 @@
 #   git clone <my_git_url>
 #   cd <git_dir>
 #   git status (git work spaceであることの確認)
+#   git branch -a (branch listの表示)
+#   git checkout <any_branch> (master以外の任意のbranchにswitchする)(remotea addの前に行っておく)
 #   git remote add upstream <upstream_git_url>
 #   git remote -v (確認)
 #   git fetch upstream
@@ -54,8 +56,11 @@ git fetch upstream
 git merge "upstream/${trace_branch}"
 
 # 自分のリポジトリにpushする場合コメントを外す
-# echo "try to push origin ${trace_branch}"
-# git push origin $trace_branch
+# echo -n "try to push?[N/y]:"
+# read input
+# if [ "$input" = "Y" ] || [ "$input" = "y" ];then
+#   git push origin $trace_branch
+# fi
 
 # 元のbranchにswitch
 if [ "$current_branch" != "$trace_branch" ];then
