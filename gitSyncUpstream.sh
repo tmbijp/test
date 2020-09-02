@@ -53,6 +53,9 @@ git fetch upstream
 #merge
 git merge "upstream/${trace_branch}"
 
+# 自分のリポジトリにpushする場合コメントを外す
+#git push origin "$trace_branch"
+
 # 元のbranchにswitch
 if [ "$current_branch" != "$trace_branch" ];then
   git checkout "$current_branch"
