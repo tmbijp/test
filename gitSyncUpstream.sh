@@ -61,15 +61,18 @@ if [ "$current_branch" != "$trace_branch" ];then
 fi
 # upstreamを取得
 git fetch upstream
-#merge
-git merge "upstream/${trace_branch}"
 
-# 自分のリポジトリにpushする場合コメントを外す
-# echo -n "try to push?[N/y]:"
-# read input
-# if [ "$input" = "Y" ] || [ "$input" = "y" ];then
-#   git push origin $trace_branch
-# fi
+#merge
+merge=$(git merge "upstream/${trace_branch}")
+echo "$merge"
+if [ "$(echo "$merge"| grep 'Already up-to-date')" == "" ];then 
+  # 何かの更新を取り込んだ場合pushするか確認
+  echo -n "try to push?[N/y]:"
+  read input
+  if [ "$input" = "Y" ] || [ "$input" = "y" ];then
+    git push origin $trace_branch
+  fi
+fi
 
 # 元のbranchにswitch
 if [ "$current_branch" != "$trace_branch" ];then
