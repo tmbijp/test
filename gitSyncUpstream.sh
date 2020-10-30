@@ -65,7 +65,7 @@ git fetch upstream
 #merge
 merge=$(git merge "upstream/${trace_branch}")
 echo "$merge"
-if [ "$(echo "$merge"| grep 'Already up-to-date')" == "" ];then 
+if [ "$(echo "$merge"| grep -E '^Already up[- ]to[- ]date')" == "" ];then
   # 何かの更新を取り込んだ場合pushするか確認
   echo -n "try to push?[N/y]:"
   read input
