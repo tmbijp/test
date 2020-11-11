@@ -63,9 +63,10 @@ fi
 git fetch upstream
 
 #merge
-merge=$(git merge "upstream/${trace_branch}")
+merge=$(git merge "upstream/${trace_branch}" 2>"/tmp/gitSync.$$")
+merge_err="$(cat "/tmp/gitSync.$$")" && rm "/tmp/gitSync.$$"
 echo "$merge"
-if [ "$(echo "$merge"| grep -E '^Already up[- ]to[- ]date')" == "" ];then
+if [ "$(echo "$merge"| grep -E '^Already up[- ]to[- ]date')" == "" ] && [ "$(echo "$merge_err"| grep 'Aborting')" == "" ];then 
   # 何かの更新を取り込んだ場合pushするか確認
   echo -n "try to push?[N/y]:"
   read input
