@@ -2,6 +2,9 @@
 #
 # git local workspaceに上流リポジトリの変更を同期する(forkしたリポジトリのfork元の変更を取り込む)
 #
+# Usage gitSyncUpstream.sh [trace_branch]
+#   trace_branchは内部のtrace_branch以外で同期させたい場合に引数で指定する
+#
 # 1.scriptの設置
 #   このscriptを$HOME/bin(なければ作成)に放り込んで置き
 #   $HOME/binにPATHが通っていなければ通しておく
@@ -23,16 +26,29 @@
 #   実行時には現在のブランチへの(git管理下のファイル)はcommitしておくこと
 #   追いかけるbranch名はtrace_branchにセットする
 #
-# 4. 自分のリポジトリにpushする場合に上流(upstream)と自分のリポジトリが一致しているかの確認
-#    push後にgithubの自分のリポジトリのtrace_branchを選択して
-#    ブランチ選択直後の画面に
-#    "This branch is even with <upstream_repo>.<trace_branch>."
-#    と表示されていたら自分のリポジトリのtrace_branchと上流(upstream)のtrace_branchが完全に一致していると確認できる。
-#    この文言がない場合は自分のリポジトリのtrace_branchとupstreamのtrace_branchで内容が異なっていることになる。
-#    このtrace_branchで何かの変更をcommit,pushしてしまっている可能性があるので確認が必要となる。
+# 4.自分のリポジトリにpushする場合に上流(upstream)と自分のリポジトリが一致しているかの確認
+#   push後にgithubの自分のリポジトリのtrace_branchを選択して
+#   ブランチ選択直後の画面に
+#   "This branch is even with <upstream_repo>.<trace_branch>."
+#   と表示されていたら自分のリポジトリのtrace_branchと上流(upstream)のtrace_branchが完全に一致していると確認できる。
+#   この文言がない場合は自分のリポジトリのtrace_branchとupstreamのtrace_branchで内容が異なっていることになる。
+#   このtrace_branchで何かの変更をcommit,pushしてしまっている可能性があるので確認が必要となる。
+#
+# 5.trace_branchの変更手順(upstreamに新規branchが追加されtrace_branchをそれに変更する場合) 手動で下記gitコマンドを実行する必要がある
+#   例：v1.0.0 => v2.0.0 の変更の場合
+#   git fetch upstream
+#   git branch -a (upsteam/v2.0.0 が存在していることを確認)
+#   git checkout v2.0.0(ローカルにv2.0.0ブランチにswitch(自動的に作成される)
+#   git push origin v2.0.0  (リモートのoriginにv2.0.0を作成する)
+#
 
-
+# 追いかけたいbranch
 trace_branch="v1.0.0"
+
+#第一引数が存在していたらそれをtrace_branchとする
+if [ "$1" != "" ];then
+  trace_branch="$1"
+fi
 
 # localがgit work spaceか確認
 git_status_err="$(git status -s 2>&1 1> /dev/null )"
