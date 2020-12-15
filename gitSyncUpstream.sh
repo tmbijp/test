@@ -89,6 +89,10 @@ if [ "$(echo "$merge"| grep -E '^Already up[- ]to[- ]date')" == "" ] && [ "$(ech
   if [ "$input" = "Y" ] || [ "$input" = "y" ];then
     git push origin $trace_branch
   fi
+else
+  if [ "$merge_err" != "" ];then
+    echo "$merge_err"
+  fi
 fi
 
 # 元のbranchにswitch
